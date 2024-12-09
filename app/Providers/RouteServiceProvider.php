@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Carbon\CarbonInterval;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;

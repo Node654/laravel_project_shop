@@ -3,7 +3,6 @@
 namespace App\Traits\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 trait HasSlug
@@ -25,16 +24,17 @@ trait HasSlug
     private static function getUniqueSlug(Model $item): string
     {
         $slug = $item->slug ?? Str::slug($item->{static::slugFrom()});
-        if (! $item->newQuery()->where('slug', $slug)->first())
-        {
+        if (! $item->newQuery()->where('slug', $slug)->first()) {
             static::$count = 1;
+
             return $slug;
         }
         if (str_contains($slug, '-') && is_int(strpos($slug, '-') + 1)) {
             $slug = substr_replace($slug, substr($slug, 0, strpos($slug, '-')), 0);
         }
-        $item->slug = $slug . '-' . static::$count;
+        $item->slug = $slug.'-'.static::$count;
         static::$count++;
+
         return self::getUniqueSlug($item);
     }
 }

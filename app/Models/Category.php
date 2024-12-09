@@ -12,13 +12,14 @@ class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
+
     use HasSlug;
 
     protected $table = 'categories';
 
     protected $fillable = [
         'slug',
-        'title'
+        'title',
     ];
 
     public function products(): BelongsToMany

@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'title' => fake()->title(),
             'brand_id' => Brand::query()->inRandomOrder()->value('id'),
             'price' => fake()->numberBetween(),
-            'thumbnail' => fake()->imageUrl(),
+            'thumbnail' => $this->faker->loremFlickr('products'),
         ];
     }
 }

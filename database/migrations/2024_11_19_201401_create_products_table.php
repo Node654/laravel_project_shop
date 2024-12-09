@@ -23,7 +23,6 @@ return new class extends Migration
             $table->unsignedInteger('price')
                 ->default(0);
 
-
             $table->foreignIdFor(Brand::class)
                 ->nullable()
                 ->constrained()
@@ -53,8 +52,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (app()->isLocal())
-        {
+        if (app()->isLocal()) {
             Schema::dropIfExists('category_product');
             Schema::dropIfExists('products');
         }

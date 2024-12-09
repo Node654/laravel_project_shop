@@ -12,6 +12,7 @@ class Brand extends Model
 {
     /** @use HasFactory<BrandFactory> */
     use HasFactory;
+
     use HasSlug;
 
     protected $table = 'brands';

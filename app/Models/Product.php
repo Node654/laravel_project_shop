@@ -13,6 +13,7 @@ class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
     use HasFactory;
+
     use HasSlug;
 
     protected $table = 'products';

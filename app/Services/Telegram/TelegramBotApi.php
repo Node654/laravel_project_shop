@@ -17,9 +17,11 @@ class TelegramBotApi
                 'chat_id' => $chatId,
                 'text' => $text,
             ])->throw()->json();
+
             return $response['ok'] ?? false;
         } catch (Throwable $e) {
             report(new TelegramBotApiException($e->getMessage()));
+
             return false;
         }
     }

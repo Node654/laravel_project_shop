@@ -17,8 +17,6 @@ class BrandFactory extends Factory
      */
     public function definition(): array
     {
-        fake();
-
         return [
             'title' => fake()->company(),
             'thumbnail' => $this->faker->loremFlickr('products'),

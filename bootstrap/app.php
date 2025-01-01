@@ -11,9 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->group('web', [
-            'throttle:global',
-        ]);
+        $middleware->web(append: ['throttle:global']);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // отправляет в sentry необработанные исключения

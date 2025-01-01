@@ -30,10 +30,11 @@ class RefreshDatabase extends Command
             return self::FAILURE;
         }
 
-        Storage::deleteDirectory('products');
+        Storage::deleteDirectory('images/brands');
+        Storage::deleteDirectory('images/products');
 
         $this->call('migrate:refresh', [
-            '--seed' => true
+            '--seed' => true,
         ]);
 
         return self::SUCCESS;

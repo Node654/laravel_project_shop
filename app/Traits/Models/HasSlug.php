@@ -7,34 +7,51 @@ use Illuminate\Support\Str;
 
 trait HasSlug
 {
-    private static int $count = 1;
-
     protected static function bootHasSlug(): void
     {
         static::creating(function (Model $item) {
-            $item->slug = static::getUniqueSlug($item);
+            $item->makeSlug();
         });
     }
 
-    public static function slugFrom(): string
+    public function slugColumn(): string
+    {
+        return 'slug';
+    }
+
+    public function slugFrom(): string
     {
         return 'title';
     }
 
-    private static function getUniqueSlug(Model $item): string
+    protected function makeSlug(): void
     {
-        $slug = $item->slug ?? Str::slug($item->{static::slugFrom()});
-        if (! $item->newQuery()->where('slug', $slug)->first()) {
-            static::$count = 1;
-
-            return $slug;
+        if (! $this->{$this->slugColumn()}) {
+            $slug = $this->slugUnique(Str::slug($this->{$this->slugFrom()}));
+            $this->{$this->slugColumn()} = $slug;
         }
-        if (str_contains($slug, '-') && is_int(strpos($slug, '-') + 1)) {
-            $slug = substr_replace($slug, substr($slug, 0, strpos($slug, '-')), 0);
-        }
-        $item->slug = $slug.'-'.static::$count;
-        static::$count++;
+    }
 
-        return self::getUniqueSlug($item);
+    protected function slugUnique(string $slug): string
+    {
+        $originalSlug = $slug;
+        $i = 0;
+
+        while ($this->slugExists($slug)) {
+            $i++;
+            $slug = $originalSlug.'-'.$i;
+        }
+
+        return $slug;
+    }
+
+    protected function slugExists(string $slug): bool
+    {
+        $query = $this->newQuery()
+            ->where(self::slugColumn(), $slug)
+            ->where($this->getKeyName(), '!=', $this->getKey())
+            ->withoutGlobalScopes();
+
+        return $query->exists();
     }
 }
